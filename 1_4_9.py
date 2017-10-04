@@ -1,28 +1,30 @@
 # namespaces is dict of pairs namespace:parent
-namespaces = {"_":"global"}
-# variables is dict of pairs variable:namespace
-variables = {}
+namespaces = {}
+# variables is dict of pairs namespace:[list of variables]
+variables = {"global":[]}
 
 def create(namespace, parent):
     namespaces.update({namespace:parent})
-    if namespaces.get(namespace) == None:
-        namespaces[parent].append(namespace)
-        namespaces[namespace].append("")
+    variables.update({namespace:[]})
 
 def add (namespace, var):
-    variables.update({namespace})
+    variables[namespace].append(var)
 
 def get(namespace, var):
-    name = namespaces.get(namespace)
-    if name == None && namespace == "global":
-        print("None")
-
+    list = variables.get(namespace)
+    if var in list:
+        return namespace
+    elif namespace == "global":
+        return "None"
+    else:
+        namespace = namespaces.get(namespace)
+        return get(namespace, var)
 
 # First input value is number of pending commands
-n = input()
-for i in n():
+n = int(input())
+for i in range(n):
     # var can be either parent namespace or variable name
-    command, namespace, var = input('Enter 3 variables: ').split()
+    command, namespace, var = input().split()
     if command == "create":
         # create <namespace> <parent> –  создать новое пространство имен
         # с именем <namespace> внутри пространства <parent>
@@ -34,6 +36,6 @@ for i in n():
         # get <namespace> <var> – получить имя пространства,
         # из которого будет взята переменная <var> при запросе из пространства <namespace>,
         # или None, если такого пространства не существует
-        get(namespace, var)
+        print(get(namespace, var))
     else:
         print("Unknown command")

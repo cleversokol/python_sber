@@ -1,36 +1,38 @@
-# classes is dict of pairs parent:child
-classes = []
+# classes is dict of pairs child:[parents]
+classes = {}
 
-def add (child, *parents):
+def add (child, parents):
+    if classes.get(child) == None:
+        classes.update({child:[]})
     for parent in parents:
-        classes.append()
+        classes[child].append(parent)
 
 def isParent(parent, child):
-    if parent == child:
-        print("Yes")
-    elif parent,child in classes:
-        print("Yes")
+    parents = classes.get(child)
+    if parent in parents or parent == child:
+        return True
+    elif parents == None:
+        return False
     else:
-        print("No")
-
-#    list = variables.get(namespace)
-#    if var in list:
-#        return namespace
-#    elif namespace == "global":
-#        return "None"
-#    else:
-#        namespace = namespaces.get(namespace)
-#        return get(namespace, var)
+        answer = False
+        for i in parents:
+            answer = answer or isParent(parent, i)
+        return answer
 
 # First input value is number of pending commands
 n = int(input())
 for i in range(n):
     # var can be either parent namespace or variable name
-    child, column, *parents = input().split()
-    add(child, *parents)
+    child, *parents = input().split()
+    if len(parents) > 0:
+        parents.remove(":")
+    add(child, parents)
 
 # Number of pending commands
 n = int(input())
 for i in range(n):
     parent, child = input().split()
-    isParent(parent, child)
+    if isParent(parent, child):
+        print("Yes")
+    else:
+        print("No")

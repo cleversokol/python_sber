@@ -13,20 +13,20 @@ def isParent(parent, child):
     else:
         print("No")
 
-    list = variables.get(namespace)
-    if var in list:
-        return namespace
-    elif namespace == "global":
-        return "None"
-    else:
-        namespace = namespaces.get(namespace)
-        return get(namespace, var)
+#    list = variables.get(namespace)
+#    if var in list:
+#        return namespace
+#    elif namespace == "global":
+#        return "None"
+#    else:
+#        namespace = namespaces.get(namespace)
+#        return get(namespace, var)
 
 # First input value is number of pending commands
 n = int(input())
 for i in range(n):
     # var can be either parent namespace or variable name
-    child, *parents = input().split()
+    child, column, *parents = input().split()
     add(child, *parents)
 
 # Number of pending commands

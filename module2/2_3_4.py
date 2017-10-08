@@ -15,30 +15,33 @@ class multifilter:
         # iterable - исходная последовательность
         # funcs - допускающие функции
         # judge - решающая функция
-        self.result = []
-        self.pos = 0
-        self.neg = 0
-        for i in iterable:
-            for f in funcs:
-#                print("f(i) = " + str(f(i)))
-                if f(i):
-                    self.pos += 1
-                else:
-                    self.neg += 1
-#            print("pos = " + str(self.pos) + ", neg = " + str(self.neg))
-#            print("i = ", i)
-            if judge(self.pos, self.neg):
-                self.result.append(i)
-#            print("result = ", self.result)
-            self.pos = 0
-            self.neg = 0
+        self.iterable = iterable
+        self.index = 0
+        self.judge = judge
+        self.funcs = []
+        for f in funcs:
+            self.funcs.append(f)
 
     def __iter__(self):
         # возвращает итератор по результирующей последовательности
-        yield self.result
+        return self
     
     def __next__(self):
-        pass
+        while True:
+            pos = 0
+            neg = 0
+            if self.index < len(self.iterable):
+                i = self.iterable[self.index]
+                self.index += 1
+                for f in self.funcs:
+                    if f(i):
+                        pos += 1
+                    else:
+                        neg += 1
+                if self.judge(pos, neg):
+                    return i
+            else:
+                raise StopIteration
 
 
 #
@@ -55,13 +58,12 @@ def mul5(x):
 
 
 a = [i for i in range(31)] # [0, 1, 2, ... , 30]
-print("a = ", a)
 
-print(list(multifilter(a, mul2, mul3, mul5))) 
+print(list(multifilter(a, mul2, mul3, mul5)))
 # [0, 2, 3, 4, 5, 6, 8, 9, 10, 12, 14, 15, 16, 18, 20, 21, 22, 24, 25, 26, 27, 28, 30]
-
-print(list(multifilter(a, mul2, mul3, mul5, judge=multifilter.judge_half))) 
+a = [i for i in range(31)]
+print(list(multifilter(a, mul2, mul3, mul5, judge=multifilter.judge_half)))
 # [0, 6, 10, 12, 15, 18, 20, 24, 30]
 
-print(list(multifilter(a, mul2, mul3, mul5, judge=multifilter.judge_all))) 
+print(list(multifilter(a, mul2, mul3, mul5, judge=multifilter.judge_all)))
 # [0, 30]

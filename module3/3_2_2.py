@@ -11,7 +11,7 @@ match_object = re.match(pattern, string)
 print(match_object)
 
 string = "abc, acc, aac"
-all_inclusions = findall(pattern, string)
+all_inclusions = re.findall(pattern, string)
 print(all_inclusions)
 
 fixed_typos = re.sub(pattern, "abc", string)

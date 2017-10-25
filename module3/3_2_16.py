@@ -12,7 +12,11 @@ pattern = re.compile(r'\A((1(00)*1)+|((10){2,}1)+|0*)*\Z')
 
 for i in range(1000):
     if i%3 == 0:
-        print("{0:b}".format(i))
+        string = "{0:b}".format(i)
+        if re.search(pattern, string) == None:
+        #    print(string)
+        #else:
+            print("no: ", string)
 
 #string = input()
 #if re.search(pattern, string) != None:

@@ -2,15 +2,20 @@ import re
 import sys
 import requests
 
-A = input()
-B = input()
+#A = input()
+#B = input()
 
-regex = r'<a href=""[\w\?\&=]*"">'
+A = "https://stepic.org/media/attachments/lesson/24472/sample0.html"
+B = "https://stepic.org/media/attachments/lesson/24472/sample2.html"
+
+#regex = r'<a href=""[\w\?\&=]*"">'
+#regex = r'<a href=\"\S*\">'
+regex = r'\S*'
 patternURL = re.compile(regex)
 #patternURL = re.compile(r'<a href=https?://\w*')
 #patternB = re.compile(r'')
 
-res = requests.get(A)
+res = requests.get(A, verify=False)
 A = res.text
 print("A = ", A)
 
@@ -20,7 +25,7 @@ for line in A:
     C = re.search(patternURL, line)
     print("search result = ", C)
     if C != None:
-        res = requests.get(C)
+        res = requests.get(C, verify=False)
         print("C status_code = ", res.status_code)
         if res.status_code == 200:
             C = res.text

@@ -5,7 +5,9 @@ import requests
 A = input()
 B = input()
 
-patternURL = re.compile(r'https?://\w*')
+regex = r'<a href=""[\w\?\&=]*"">'
+patternURL = re.compile(regex)
+#patternURL = re.compile(r'<a href=https?://\w*')
 #patternB = re.compile(r'')
 
 res = requests.get(A)
@@ -16,6 +18,7 @@ possible = False
 
 for line in A:
     C = re.search(patternURL, line)
+    print("search result = ", C)
     if C != None:
         res = requests.get(C)
         print("C status_code = ", res.status_code)

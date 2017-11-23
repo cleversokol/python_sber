@@ -1,41 +1,51 @@
 import json
 import operator
-# classes is dict of pairs child:[parents]
-classes = {}
 
-def add (child, parents):
+def children(parent):
+    childs = classes.get(parent)
+    #print("children func")
+    #print("classes = ", classes)
+    #print("parent = ", parent)
+    #print("childs = ", childs)
+    #print("value = ", value)
+    if childs:
+        for child in childs:
+            value.append(child)
+            children(child)
+        #print("were childs")
+
+classes = {}
+answer = {}
+j = json.loads(input())
+for i in j:
+    child = i["name"]
+    parents = i["parents"]
+
+    #print("child = ", child)
+    #print("parents = ", parents)
     if classes.get(child) == None:
         classes.update({child:[]})
     for parent in parents:
-        classes[child].append(parent)
+        #print(parent)
+        if classes.get(parent) == None:
+            classes.update({parent:[]})
+        classes[parent].append(child)
 
-def isParent(parent, child):
-    parents = classes.get(child)
-    if parent in parents or parent == child:
-        return True
-    elif parents == None:
-        return False
-    else:
-        answer = False
-        for i in parents:
-            answer = answer or isParent(parent, i)
-        return answer
-
-# First input value is number of pending commands
-j = json.loads(input())
-for i in j:
-    # var can be either parent namespace or variable name
-    child = i["name"]
-    parents = i["parents"]
-    add(child, parents)
-
-sorted_classes = sorted(classes.items(), key=operator.itemgetter(0))
-print(classes)
-# Number of pending commands
-#n = int(input())
-#for i in range(n):
-#    parent, child = input().split()
-#    if isParent(parent, child):
-#        print("Yes")
-#    else:
-#        print("No")
+#print("befoe classes = ", classes)
+for parent in classes:
+    #print("FOR parent = ", parent)
+    value = []
+    #print("1")
+    children(parent)
+    #print("2")
+    answer.update({parent:value})
+#print("answer = ", answer)
+for key in answer:
+    #print(answer.get(key))
+    #print(len(set(answer.get(key))))
+    value = len(set(answer.get(key)))
+    answer.update({key:value})
+sorted_classes = sorted(answer.items(), key=operator.itemgetter(0))
+for i in sorted_classes:
+    print(i[0], ":", i[1]+1)
+#print("answer = ", answer)

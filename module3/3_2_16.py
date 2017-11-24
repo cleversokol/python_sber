@@ -2,7 +2,7 @@ import re
 import sys
 
 #pattern = re.compile(r'\A((1(00)*1)+|((10){2,}1)+|0*)*\Z')
-pattern = re.compile(r'\A0*(1(01*0)*1)*0*\Z')
+pattern = re.compile(r'\A0*((11)*1((00)*01*0)*(11)*1)*0*\Z')
 
 #for line in sys.stdin:
 #    line = line.rstrip()

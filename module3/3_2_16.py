@@ -2,7 +2,19 @@ import re
 import sys
 
 #pattern = re.compile(r'\A((1(00)*1)+|((10){2,}1)+|0*)*\Z')
-pattern = re.compile(r'\A0*((11)*1((00)*01*0)*(11)*1)*0*\Z')
+#pattern = re.compile(r'^0*((11)*1((00)*01*0)*(11)*1)*0*$')
+#pattern = re.compile(r'^(1*((01*0)*1)*0*)*$')
+#pattern = re.compile(r'^((00)*|(11)*|(1(01*0)*1)*)*$')
+#pattern = re.compile(r'((1((0(1*)0)*)1)*)')
+
+# Very good
+#pattern = re.compile(r'^(((1(01*0)*1)*0*)*)$')
+
+# FINALLLY!
+pattern = re.compile(r'^((0|(1(01*0)*1))+)$')
+#
+
+#pattern = re.compile(r'^(?:(?:(?:1(?:01*0)*1)*0*)*)$')
 
 #for line in sys.stdin:
 #    line = line.rstrip()
@@ -13,7 +25,7 @@ pattern = re.compile(r'\A0*((11)*1((00)*01*0)*(11)*1)*0*\Z')
 for i in range(1000):
     if i%3 == 0:
         string = "{0:b}".format(i)
-        if re.search(pattern, string) == None:
+        if re.search(pattern, string) != None:
             print(string)
         else:
             print("no: ", string)
